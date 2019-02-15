@@ -1,0 +1,19 @@
+version: '3'
+services:
+  ms-api-gateway:
+    image: "org.sj/ms-api-gateway"
+    container_name: ms-api-gateway
+    command: -Dserver.port=9190 -Deureka.client.serviceUrl.defaultZone=http://ms-service-registry-server-1:8761/eureka/  org.sj.msapigateway.MsApiGatewayApplication
+    ports:
+           - 9190:9190
+  ms-user-repo:
+    image: "org.sj/ms-user-repo-docker"
+    container_name: ms-user-repo
+    command: -Dserver.port=8180 -Deureka.client.serviceUrl.defaultZone=http://ms-service-registry-server-1:8761/eureka/ -Dspring.profiles.active=development -Dspring.datasource.url=jdbc:postgresql://10.0.75.1:5434/postgres -Dspring.datasource.username=postgres -Dspring.datasource.password=nsdl1234 org.sj.msuserrepo.MsUserRepoApplication
+    ports:
+           - 8180:8180      
+networks:
+  default:
+    external:
+      name: org-sj-ms
+#docker network create -d bridge org-sj-ms           
